@@ -1,31 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>CoreWeave GPU Pricing</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .loading {
-            margin-top: 20px;
-            font-style: italic;
-            color: #666;
-        }
-    </style>
 </head>
 <body>
     <nav>
@@ -33,59 +12,37 @@
         <a href="/news">News</a>
         <a href="/pricing">Pricing</a>
     </nav>
-    
+
     <h1>CoreWeave GPU Pricing</h1>
-    <p>Current pricing for CoreWeave GPU servers:</p>
-    
-    <button id="fetchButton" onclick="fetchPricing()">Fetch Current Prices</button>
-    <div id="loading" class="loading" style="display:none;">Loading pricing data...</div>
+    <button onclick="fetchPricing()">Get GPU Pricing</button>
     <div id="pricingTable"></div>
-    
+
     <script>
-        // Fetch pricing on page load
-        window.onload = fetchPricing;
-        
         async function fetchPricing() {
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('pricingTable').innerHTML = '';
-            
-            try {
-                const response = await fetch('/api/pricing');
-                const data = await response.json();
-                
-                if (data.error) {
-                    document.getElementById('pricingTable').innerHTML = `<p>Error: ${data.error}</p>`;
-                    return;
-                }
-                
-                const tableHTML = `
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>GPU Model</th>
-                                <th>VRAM (GB)</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${data.pricing.map(gpu => `
-                                <tr>
-                                    <td>${gpu.model}</td>
-                                    <td>${gpu.vram}</td>
-                                    <td>${gpu.price}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                    <p class="source-note">Data sourced from CoreWeave pricing page as of ${new Date().toLocaleDateString()}</p>
-                `;
-                
-                document.getElementById('pricingTable').innerHTML = tableHTML;
-            } catch (error) {
-                document.getElementById('pricingTable').innerHTML = `<p>Failed to fetch pricing: ${error.message}</p>`;
-            } finally {
-                document.getElementById('loading').style.display = 'none';
+            const response = await fetch('/api/pricing');
+            const data = await response.json();
+
+            if (data.error) {
+                document.getElementById('pricingTable').innerHTML = `<p>${data.error}</p>`;
+                return;
             }
+
+            const table = `
+                <table border="1">
+                    <tr>
+                        <th>GPU Model</th>
+                        <th>VRAM (GB)</th>
+                        <th>Price Per Hour</th>
+                    </tr>
+                    ${data.pricing.map(row => `
+                        <tr>
+                            <td>${row.model}</td>
+                            <td>${row.vram}</td>
+                            <td>${row.price}</td>
+                        </tr>`).join('')}
+                </table>`;
+            
+            document.getElementById('pricingTable').innerHTML = table;
         }
     </script>
 </body>
