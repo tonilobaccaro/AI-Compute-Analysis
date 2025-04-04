@@ -4,18 +4,41 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>...</nav>
-    <h1>Cost Calculator</h1>
-    <input type="number" id="wordCount" placeholder="Enter word count">
-    <button onclick="calculateCost()">Estimate</button>
-    <div id="priceResult"></div>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/news">News</a>
+        <a href="/pricing">Pricing</a>
+    </nav>
+    <h1>CoreWeave GPU Pricing</h1>
+    <button onclick="fetchPricing()">Get GPU Pricing</button>
+    <div id="pricingTable"></div>
+
     <script>
-        async function calculateCost() {
-            const response = await fetch('/api/pricing?words=' + 
-                document.getElementById('wordCount').value);
+        async function fetchPricing() {
+            const response = await fetch('/api/pricing');
             const data = await response.json();
-            document.getElementById('priceResult').innerHTML = 
-                `Estimated cost: $${data.cost}`;
+
+            if (data.error) {
+                document.getElementById('pricingTable').innerHTML = `<p>${data.error}</p>`;
+                return;
+            }
+
+            const table = `
+                <table border="1">
+                    <tr>
+                        <th>GPU Model</th>
+                        <th>VRAM (GB)</th>
+                        <th>Pricing Per Hour</th>
+                    </tr>
+                    ${data.pricing.map(row => `
+                        <tr>
+                            <td>${row.model}</td>
+                            <td>${row.vram}</td>
+                            <td>${row.price}</td>
+                        </tr>`).join('')}
+                </table>`;
+            
+            document.getElementById('pricingTable').innerHTML = table;
         }
     </script>
 </body>
