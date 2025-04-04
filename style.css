@@ -1,0 +1,12 @@
+nav {
+    padding: 1rem;
+    background: #f0f0f0;
+}
+nav a {
+    margin-right: 1rem;
+}
+.content {
+    padding: 2rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
