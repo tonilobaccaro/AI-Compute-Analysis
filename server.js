@@ -20,7 +20,7 @@ app.get('/api/pricing', async (req, res) => {
                 },
                 {
                     role: "user",
-                    content: "Display a table of price offerings for CoreWeave GPUs, including GPU model, VRAM, and pricing per hour."
+                    content: "Display a table of CoreWeave GPU prices, including GPU model, VRAM, and pricing per hour."
                 }
             ]
         });
