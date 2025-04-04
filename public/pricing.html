@@ -19,30 +19,35 @@
 
     <script>
         async function fetchPricing() {
-            const response = await fetch('/api/pricing');
-            const data = await response.json();
+            document.getElementById('pricingTable').innerHTML = '<p>Loading...</p>';
+            try {
+                const response = await fetch('/api/pricing');
+                const data = await response.json();
 
-            if (data.error) {
-                document.getElementById('pricingTable').innerHTML = `<p>${data.error}</p>`;
-                return;
-            }
+                if (data.error) {
+                    document.getElementById('pricingTable').innerHTML = `<p>${data.error}</p>`;
+                    return;
+                }
 
-            const table = `
-                <table border="1">
-                    <tr>
-                        <th>GPU Model</th>
-                        <th>VRAM (GB)</th>
-                        <th>Price Per Hour</th>
-                    </tr>
-                    ${data.pricing.map(row => `
+                const table = `
+                    <table border="1">
                         <tr>
-                            <td>${row.model}</td>
-                            <td>${row.vram}</td>
-                            <td>${row.price}</td>
-                        </tr>`).join('')}
-                </table>`;
-            
-            document.getElementById('pricingTable').innerHTML = table;
+                            <th>GPU Model</th>
+                            <th>VRAM (GB)</th>
+                            <th>Price Per Hour</th>
+                        </tr>
+                        ${data.pricing.map(row => `
+                            <tr>
+                                <td>${row.model}</td>
+                                <td>${row.vram}</td>
+                                <td>${row.price}</td>
+                            </tr>`).join('')}
+                    </table>`;
+                
+                document.getElementById('pricingTable').innerHTML = table;
+            } catch (error) {
+                document.getElementById('pricingTable').innerHTML = `<p>Error fetching pricing: ${error.message}</p>`;
+            }
         }
     </script>
 </body>
