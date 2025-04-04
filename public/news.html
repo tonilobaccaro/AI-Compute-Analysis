@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>...</nav>
+    <h1>AI News Generator</h1>
+    <select id="category">
+        <option value="technology">Technology</option>
+        <option value="business">Business</option>
+        <option value="sports">Sports</option>
+    </select>
+    <button onclick="generateNews()">Generate Headlines</button>
+    <div id="newsResults"></div>
+    <script>
+        async function generateNews() {
+            const response = await fetch('/api/news?category=' + 
+                document.getElementById('category').value);
+            const data = await response.json();
+            document.getElementById('newsResults').innerHTML = data.articles;
+        }
+    </script>
+</body>
+</html>
