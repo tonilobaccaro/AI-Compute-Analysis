@@ -6,7 +6,7 @@ const app = express();
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Fallback route for undefined paths
+// Catch-all route for undefined paths
 app.get('*', (req, res) => {
     res.status(404).send('Page not found');
 });
