@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>...</nav>
+    <h1>Cost Calculator</h1>
+    <input type="number" id="wordCount" placeholder="Enter word count">
+    <button onclick="calculateCost()">Estimate</button>
+    <div id="priceResult"></div>
+    <script>
+        async function calculateCost() {
+            const response = await fetch('/api/pricing?words=' + 
+                document.getElementById('wordCount').value);
+            const data = await response.json();
+            document.getElementById('priceResult').innerHTML = 
+                `Estimated cost: $${data.cost}`;
+        }
+    </script>
+</body>
+</html>
