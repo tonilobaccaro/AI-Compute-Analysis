@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pricing</title>
+    <title>Pricing of AI Compute</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,42 +13,10 @@
         <a href="/pricing">Pricing</a>
     </nav>
 
-    <h1>CoreWeave GPU Pricing</h1>
-    <button onclick="fetchPricing()">Get GPU Pricing</button>
-    <div id="pricingTable"></div>
-
-    <script>
-        async function fetchPricing() {
-            document.getElementById('pricingTable').innerHTML = '<p>Loading...</p>';
-            try {
-                const response = await fetch('/api/pricing');
-                const data = await response.json();
-
-                if (data.error) {
-                    document.getElementById('pricingTable').innerHTML = `<p>${data.error}</p>`;
-                    return;
-                }
-
-                const table = `
-                    <table border="1">
-                        <tr>
-                            <th>GPU Model</th>
-                            <th>VRAM (GB)</th>
-                            <th>Price Per Hour</th>
-                        </tr>
-                        ${data.pricing.map(row => `
-                            <tr>
-                                <td>${row.model}</td>
-                                <td>${row.vram}</td>
-                                <td>${row.price}</td>
-                            </tr>`).join('')}
-                    </table>`;
-                
-                document.getElementById('pricingTable').innerHTML = table;
-            } catch (error) {
-                document.getElementById('pricingTable').innerHTML = `<p>Error fetching pricing: ${error.message}</p>`;
-            }
-        }
-    </script>
+    <h1>Pricing of AI Compute</h1>
+    <ul>
+        <li>CoreWeave</li>
+        <li>Lambda Labs</li>
+    </ul>
 </body>
 </html>
